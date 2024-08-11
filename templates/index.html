@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Calculator </title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            width: 100%;
+            text-align: left;
+        }
+
+        input[type="number"], select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .button-group {
+            margin-top: 15px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        button {
+            background-color: #f44336;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #e53935;
+        }
+
+        h2 {
+            color: #333;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1> Calculator</h1>
+    <form id="calcForm" action="/calculate" method="post">
+        <label for="num1">Number 1:</label>
+        <input type="number" id="num1" name="num1" required>
+
+        <label for="operation">Operation:</label>
+        <select id="operation" name="operation" required>
+            <option value="add">+</option>
+            <option value="subtract">-</option>
+            <option value="multiply">×</option>
+            <option value="divide">÷</option>
+            <option value="sqrt">√</option>
+        </select>
+
+        <label for="num2" id="num2-label">Number 2:</label>
+        <input type="number" id="num2" name="num2">
+
+        <div class="button-group">
+            <input type="submit" value="Calculate">
+            <button type="button" id="clearResult">X</button>
+        </div>
+    </form>
+
+    {% if result is not none %}
+        <h2 id="resultDisplay">Result: {{ result }}</h2>
+    {% else %}
+        <h2 id="resultDisplay">Result: 0</h2>
+    {% endif %}
+
+    <script>
+        const operationSelect = document.getElementById('operation');
+        const num2Input = document.getElementById('num2');
+        const num2Label = document.getElementById('num2-label');
+        const calcForm = document.getElementById('calcForm');
+        const clearResultButton = document.getElementById('clearResult');
+        const resultDisplay = document.getElementById('resultDisplay');
+
+        operationSelect.addEventListener('change', function() {
+            if (this.value === 'sqrt') {
+                num2Input.style.display = 'none';
+                num2Label.style.display = 'none';
+            } else {
+                num2Input.style.display = 'block';
+                num2Label.style.display = 'block';
+            }
+        });
+
+        // Reset input fields after form submission
+        calcForm.addEventListener('submit', function() {
+            setTimeout(function() {
+                document.getElementById('num1').value = '';
+                document.getElementById('num2').value = '';
+            }, 50); // Short delay to allow form submission
+        });
+
+        // Clear result when "X" button is clicked
+        clearResultButton.addEventListener('click', function() {
+            resultDisplay.textContent = 'Result: 0';
+        });
+    </script>
+</body>
+</html>
